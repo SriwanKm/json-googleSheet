@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON Query</title>
+</head>
+<body>
+<h1>JSON Google Sheet</h1>
+<button type="button" id="callData">Display JSON</button>
+<div id="output"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#callData').click(function () {
+            const url = 'https://spreadsheets.google.com/feeds/list/1Br3EK1nDNxEsAbsO7t9W5ZpTzYbRZzOaIEdSnz6snQs/od6/public/values?alt=json';
+            $.getJSON(url, function (data) {
+                console.log(data.feed.entry)
+                let html = '<h3>Google Sheet Display</h3><table>'
+                let closeTag = '</table>'
+                $.each(data.feed.entry, function
+                    (key, val) {
+                    console.log(val.gsx$studentid.$t)
+                    console.log(val.gsx$firstname.$t)
+                    console.log(val.gsx$lastname.$t)
+                    console.log(val.gsx$major.$t)
+                    html += `
+                <tr>
+                    <td>${val.gsx$studentid.$t}.</td>
+                    <td>${val.gsx$firstname.$t}</td>
+                    <td>${val.gsx$lastname.$t}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Major: </td>
+                    <td>${val.gsx$major.$t}</td>
+                </tr>
+                `
+                })
+                $('#output').html(html + closeTag);
+            })
+        })
+    });
+</script>
+
+</body>
+</html>
